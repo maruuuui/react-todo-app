@@ -1,9 +1,18 @@
 import React from 'react'
+import './ToDoCard.css'
 
-function ToDoCard() {
-  const title = 'タイトル'
-  const deadline = '2022/12/12 00:00'
-  const memo = 'メモメモ'
+type ToDoCardProps = {
+  id: string
+  title: string
+  deadline: string
+  memo: string
+  openModalFunc: (id: string, title: string) => void
+}
+
+function ToDoCard(props: ToDoCardProps) {
+  const title = props.title
+  const deadline = props.deadline
+  const memo = props.memo
   return (
     <div className="minigrid-card">
       <div className="card">

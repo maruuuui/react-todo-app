@@ -3,14 +3,25 @@ import 'pages/App/index.css'
 import ToDoCard from 'pages/App/components/ToDoCard'
 
 function App() {
-  const numbers = [1, 2, 3, 4, 5]
-  function listItems() {
-    return numbers.map((number) => <li>{number}</li>)
+  const id = 'hogehoge'
+  const title = 'タイトル'
+  const deadline = '2022/12/12 00:00'
+  const memo = 'メモメモ'
+  const openModalFunc = () => {
+    alert('押されたよ')
   }
-  const items = listItems()
+
   return (
     <div className="App">
-      <ToDoCard />
+      <div className="minigrid-cards">
+        <ToDoCard
+          id={id}
+          title={title}
+          deadline={deadline}
+          memo={memo}
+          openModalFunc={openModalFunc}
+        />
+      </div>
     </div>
   )
 }

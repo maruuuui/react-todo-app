@@ -1,3 +1,3 @@
 # react-todo-app
 
-ToDoアプリのフロントエンドをReactを使用して作る
+ToDo アプリのフロントエンドを React を使用して作る

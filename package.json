@@ -26,6 +26,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "fix": "prettier --write ./",
     "prepare": "husky install",
     "lint-staged": "lint-staged"
   },
@@ -46,7 +47,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },"lint-staged": {
+  },
+  "lint-staged": {
     "*.{ts,tsx}": [
       "prettier --write"
     ]
