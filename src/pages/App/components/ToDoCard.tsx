@@ -10,9 +10,15 @@ type ToDoCardProps = {
 }
 
 function ToDoCard(props: ToDoCardProps) {
+  const id = props.id
   const title = props.title
   const deadline = props.deadline
   const memo = props.memo
+
+  function onCompleteToDoModalButtonClick() {
+    props.openModalFunc(id, title)
+  }
+
   return (
     <div className="minigrid-card">
       <div className="card">
@@ -22,7 +28,7 @@ function ToDoCard(props: ToDoCardProps) {
           <p className="card-text">{memo}</p>
           {/* ToDo完了確認モーダル(#askCompleteToDoModal)を表示するボタン */}
           <button
-            value="{{.ID}},{{.Title}}"
+            onClick={onCompleteToDoModalButtonClick}
             className="btn btn-primary askCompleteToDoModalButton"
           >
             完了！
