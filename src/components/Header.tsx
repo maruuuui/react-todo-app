@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import moment, { Moment } from 'moment'
+
 import CreateToDoModal from 'components/CreateToDoModal'
 
 function Header() {
@@ -12,7 +14,7 @@ function Header() {
     setIsOpen(false)
   }
 
-  function createToDo(title: string, memo: string, deadline: string) {
+  function createToDo(title: string, memo: string, deadline: Moment) {
     console.log(`title:${title},memo:${memo},deadline:${deadline}`)
   }
 

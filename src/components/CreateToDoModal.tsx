@@ -1,5 +1,11 @@
 import React, { useState } from 'react'
 import Modal from 'react-modal'
+import moment, { Moment } from 'moment'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import TextField from '@mui/material/TextField'
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
+
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 
 const customStyles = {
   content: {
@@ -17,13 +23,27 @@ const customStyles = {
 type CreateToDoModalProps = {
   modalIsOpen: boolean
   closeModal: () => void
-  createToDo: (title: string, memo: string, deadline: string) => void
+  createToDo: (title: string, memo: string, deadline: Moment) => void
 }
 
-Modal.setAppElement('body') // bodyなど任意の要素に変更OK
+Modal.setAppElement('body') // 'react-modal'の処理
 
 function CreateToDoModal(props: CreateToDoModalProps) {
-  function tmp() {
+  const [title, settitle] = useState<string>('')
+  const handleTitleInput = (event: React.FormEvent<HTMLInputElement>) => {
+    settitle(event.currentTarget.value)
+  }
+  const [memo, setMemo] = useState<string>('')
+  const handleMemoInput = (event: React.FormEvent<HTMLTextAreaElement>) => {
+    setMemo(event.currentTarget.value)
+  }
+
+  const [deadline, setDeadline] = useState<Moment | null>(moment())
+  const handleDeadlineChange = (newValue: Moment | null) => {
+    setDeadline(newValue)
+  }
+
+  function post() {
     console.log('ToDo追加ボタンが押下されたよ')
     var forms = document.querySelectorAll('.needs-validation')
 
@@ -36,8 +56,9 @@ function CreateToDoModal(props: CreateToDoModalProps) {
 
       form.classList.add('was-validated')
     })
-    if (validated) {
-      props.createToDo('hoge', 'hoge', 'hoge')
+
+    if (validated && deadline !== null && deadline.isValid()) {
+      props.createToDo(title, memo, deadline)
     }
   }
   return (
@@ -67,6 +88,7 @@ function CreateToDoModal(props: CreateToDoModalProps) {
               type="text"
               className="form-control"
               id="titleInput"
+              onChange={handleTitleInput}
               required
             />
             <div className="invalid-feedback"> この項目は必須です。 </div>
@@ -75,7 +97,11 @@ function CreateToDoModal(props: CreateToDoModalProps) {
             <label htmlFor="memoTextarea" className="form-label">
               備考
             </label>
-            <textarea className="form-control" id="memoTextarea"></textarea>
+            <textarea
+              className="form-control"
+              onChange={handleMemoInput}
+              id="memoTextarea"
+            ></textarea>
           </div>
           <div className="deadline mb-3">
             <label htmlFor="deadlineDatetimepickerInput" className="form-label">
@@ -87,27 +113,23 @@ function CreateToDoModal(props: CreateToDoModalProps) {
               data-td-target-input="nearest"
               data-td-target-toggle="nearest"
             >
-              <input
-                id="deadlineDatetimepickerInput"
-                type="text"
-                className="form-control"
-                data-td-target="#deadlineDatetimepicker"
-                required
-              />
-              <span
-                className="input-group-text"
-                data-td-target="#deadlineDatetimepicker"
-                data-td-toggle="datetimepicker"
-              >
-                <span className="fa-solid fa-calendar"></span>
-              </span>
+              <LocalizationProvider dateAdapter={AdapterMoment}>
+                <DateTimePicker
+                  className="form-control"
+                  value={deadline}
+                  onChange={handleDeadlineChange}
+                  renderInput={(params) => <TextField {...params} />}
+                  inputFormat="YYYY/MM/DD HH:mm"
+                />
+              </LocalizationProvider>
+
               <div className="invalid-feedback"> この項目は必須です。 </div>
             </div>
           </div>
         </form>
       </div>
       <div className="modal-footer">
-        <button type="button" className="btn btn-primary" onClick={tmp}>
+        <button type="button" className="btn btn-primary" onClick={post}>
           ToDo追加
         </button>
       </div>
