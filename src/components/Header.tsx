@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import moment, { Moment } from 'moment'
+import { Button, Container, Nav, Navbar } from 'react-bootstrap'
 
 import CreateToDoModal from 'components/CreateToDoModal'
 
@@ -19,22 +20,21 @@ function Header() {
   }
 
   return (
-    <header>
-      <nav className="navbar navbar-light bg-light">
-        <div className="container-fluid">
-          <span className="navbar-brand mb-0 h1">ToDoアプリ</span>
-          {/* ToDo追加モーダル(#createToDoModal)を表示するボタン */}
-          <button className="btn btn-success" onClick={openModal}>
+    <Navbar bg="light">
+      <Container fluid>
+        <Navbar.Brand className="mb-0">ToDoアプリ</Navbar.Brand>
+        <Nav.Item>
+          <Button variant="success" onClick={openModal}>
             新規作成
-          </button>
-          <CreateToDoModal
-            modalIsOpen={modalIsOpen}
-            closeModal={closeModal}
-            createToDo={createToDo}
-          />
-        </div>
-      </nav>
-    </header>
+          </Button>
+        </Nav.Item>
+      </Container>
+      <CreateToDoModal
+        modalIsOpen={modalIsOpen}
+        closeModal={closeModal}
+        createToDo={createToDo}
+      />
+    </Navbar>
   )
 }
 

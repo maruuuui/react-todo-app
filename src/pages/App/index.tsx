@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import 'pages/App/index.css'
+import { Container, Row, Col } from 'react-bootstrap'
+
 import ToDoCard from 'pages/App/components/ToDoCard'
 
 import { ToDo } from 'types'
@@ -39,22 +41,23 @@ function App() {
   }, [shouldFetchToDoData])
 
   return (
-    <div className="App">
-      <div className="minigrid-cards">
+    <Container fluid>
+      <Row>
         {toDoDataArray.map((toDoData, i) => {
           return (
-            <ToDoCard
-              key={i}
-              id={toDoData.id}
-              title={toDoData.title}
-              deadline={toDoData.deadline}
-              memo={toDoData.memo}
-              openModalFunc={openModalFunc}
-            />
+            <Col xs={12} md={4} lg={3} key={i}>
+              <ToDoCard
+                id={toDoData.id}
+                title={toDoData.title}
+                deadline={toDoData.deadline}
+                memo={toDoData.memo}
+                openModalFunc={openModalFunc}
+              />
+            </Col>
           )
         })}
-      </div>
-    </div>
+      </Row>
+    </Container>
   )
 }
 

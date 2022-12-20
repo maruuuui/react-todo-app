@@ -1,24 +1,10 @@
 import React, { useState } from 'react'
-import Modal from 'react-modal'
 import moment, { Moment } from 'moment'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import TextField from '@mui/material/TextField'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
-
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
-
-const customStyles = {
-  content: {
-    width: '70%',
-    maxWidth: '500px',
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  },
-}
+import { Button, Form, Modal } from 'react-bootstrap'
 
 type CreateToDoModalProps = {
   modalIsOpen: boolean
@@ -26,17 +12,9 @@ type CreateToDoModalProps = {
   createToDo: (title: string, memo: string, deadline: Moment) => void
 }
 
-Modal.setAppElement('body') // 'react-modal'の処理
-
 function CreateToDoModal(props: CreateToDoModalProps) {
   const [title, settitle] = useState<string>('')
-  const handleTitleInput = (event: React.FormEvent<HTMLInputElement>) => {
-    settitle(event.currentTarget.value)
-  }
   const [memo, setMemo] = useState<string>('')
-  const handleMemoInput = (event: React.FormEvent<HTMLTextAreaElement>) => {
-    setMemo(event.currentTarget.value)
-  }
 
   const [deadline, setDeadline] = useState<Moment | null>(moment())
   const handleDeadlineChange = (newValue: Moment | null) => {
@@ -59,54 +37,42 @@ function CreateToDoModal(props: CreateToDoModalProps) {
 
     if (validated && deadline !== null && deadline.isValid()) {
       props.createToDo(title, memo, deadline)
+      props.closeModal()
     }
   }
   return (
-    <Modal
-      contentLabel="Example Modal"
-      isOpen={props.modalIsOpen}
-      style={customStyles}
-      onRequestClose={props.closeModal}
-    >
-      <div className="modal-header">
-        <h5 className="modal-title" id="createToDoModalLabel">
-          ToDo追加フォーム
-        </h5>
-        <button
-          type="button"
-          className="btn-close"
-          onClick={props.closeModal}
-        ></button>
-      </div>
-      <div className="modal-body">
-        <form className="needs-validation" noValidate>
-          <div className="title mb-3">
-            <label htmlFor="titleInput" className="form-label">
-              タイトル
-            </label>
-            <input
+    <Modal show={props.modalIsOpen} onHide={props.closeModal}>
+      <Modal.Header closeButton>
+        <Modal.Title>ToDo追加フォーム</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form className="needs-validation" noValidate>
+          <Form.Group className="title mb-3">
+            <Form.Label>タイトル</Form.Label>
+            <Form.Control
               type="text"
-              className="form-control"
               id="titleInput"
-              onChange={handleTitleInput}
+              onChange={(event) => {
+                settitle(event.currentTarget.value)
+              }}
               required
             />
-            <div className="invalid-feedback"> この項目は必須です。 </div>
-          </div>
-          <div className="memo mb-3">
-            <label htmlFor="memoTextarea" className="form-label">
-              備考
-            </label>
-            <textarea
-              className="form-control"
-              onChange={handleMemoInput}
+            <Form.Control.Feedback type="invalid">
+              この項目は必須です。
+            </Form.Control.Feedback>
+          </Form.Group>
+          <Form.Group className="memo mb-3">
+            <Form.Label>備考</Form.Label>
+            <Form.Control
+              as="textarea"
               id="memoTextarea"
-            ></textarea>
-          </div>
-          <div className="deadline mb-3">
-            <label htmlFor="deadlineDatetimepickerInput" className="form-label">
-              締め切り日時
-            </label>
+              onChange={(event) => {
+                setMemo(event.currentTarget.value)
+              }}
+            />
+          </Form.Group>
+          <Form.Group className="deadline mb-3">
+            <Form.Label>締め切り日時</Form.Label>
             <div
               className="input-group"
               id="deadlineDatetimepicker"
@@ -122,17 +88,15 @@ function CreateToDoModal(props: CreateToDoModalProps) {
                   inputFormat="YYYY/MM/DD HH:mm"
                 />
               </LocalizationProvider>
-
-              <div className="invalid-feedback"> この項目は必須です。 </div>
             </div>
-          </div>
-        </form>
-      </div>
-      <div className="modal-footer">
-        <button type="button" className="btn btn-primary" onClick={post}>
+          </Form.Group>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="primary" onClick={post}>
           ToDo追加
-        </button>
-      </div>
+        </Button>
+      </Modal.Footer>
     </Modal>
   )
 }
