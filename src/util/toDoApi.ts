@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { Moment } from 'moment'
 import { ToDo } from 'types'
 
 // デプロイ時にはawsのurlに差し替える
@@ -29,5 +30,43 @@ export async function getToDoDataArray() {
   } catch (err) {
     console.log(err)
     throw Error('ToDoの取得に失敗しました')
+  }
+}
+
+export async function createToDo(
+  title: string,
+  memo: string,
+  deadline: Moment,
+) {
+  console.log(`createToDo title:${title},memo:${memo},deadline:${deadline}`)
+  try {
+    const res = await axios.post(url, {
+      title,
+      memo,
+      deadline: deadline.format('YYYY/MM/DD HH:mm:ss'),
+    })
+    if (res.status !== 200) {
+      throw Error('ToDoの作成に失敗しました')
+    }
+
+    return res
+  } catch (err) {
+    console.log(err)
+    throw Error('ToDoの作成に失敗しました')
+  }
+}
+
+export async function deleteToDo(id: string) {
+  console.log(`deleteToDo id:${id}`)
+  try {
+    const res = await axios.delete(`${url}/${id}`)
+    if (res.status !== 200) {
+      throw Error('ToDoの削除に失敗しました')
+    }
+
+    return res
+  } catch (err) {
+    console.log(err)
+    throw Error('ToDoの削除に失敗しました')
   }
 }

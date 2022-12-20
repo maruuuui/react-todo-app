@@ -5,11 +5,11 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { Button, Form, Modal } from 'react-bootstrap'
+import { createToDo } from 'util/toDoApi'
 
 type CreateToDoModalProps = {
   modalIsOpen: boolean
   closeModal: () => void
-  createToDo: (title: string, memo: string, deadline: Moment) => void
 }
 
 function CreateToDoModal(props: CreateToDoModalProps) {
@@ -36,7 +36,7 @@ function CreateToDoModal(props: CreateToDoModalProps) {
     })
 
     if (validated && deadline !== null && deadline.isValid()) {
-      props.createToDo(title, memo, deadline)
+      createToDo(title, memo, deadline)
       props.closeModal()
     }
   }

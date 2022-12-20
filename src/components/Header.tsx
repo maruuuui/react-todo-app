@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import moment, { Moment } from 'moment'
 import { Button, Container, Nav, Navbar } from 'react-bootstrap'
 
 import CreateToDoModal from 'components/CreateToDoModal'
@@ -15,10 +14,6 @@ function Header() {
     setIsOpen(false)
   }
 
-  function createToDo(title: string, memo: string, deadline: Moment) {
-    console.log(`title:${title},memo:${memo},deadline:${deadline}`)
-  }
-
   return (
     <Navbar bg="light">
       <Container fluid>
@@ -29,11 +24,7 @@ function Header() {
           </Button>
         </Nav.Item>
       </Container>
-      <CreateToDoModal
-        modalIsOpen={modalIsOpen}
-        closeModal={closeModal}
-        createToDo={createToDo}
-      />
+      <CreateToDoModal modalIsOpen={modalIsOpen} closeModal={closeModal} />
     </Navbar>
   )
 }
