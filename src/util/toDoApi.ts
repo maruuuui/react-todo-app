@@ -7,13 +7,13 @@ const url =
   typeof process.env.REACT_APP_BACKEND_HOST == 'string'
     ? process.env.REACT_APP_BACKEND_HOST
     : 'http://localhost:8000'
-// const accessControlAllowOrigin =
-//   typeof process.env.REACT_APP_ORIGIN == 'string'
-//     ? process.env.REACT_APP_ORIGIN
-//     : 'http://localhost:3000'
-// const requestHeader = {
-//     "Access-Control-Allow-Origin": accessControlAllowOrigin,
-// }
+const accessControlAllowOrigin =
+  typeof process.env.REACT_APP_ORIGIN == 'string'
+    ? process.env.REACT_APP_ORIGIN
+    : 'http://localhost:3000'
+const requestHeader = {
+  'Access-Control-Allow-Origin': accessControlAllowOrigin,
+}
 
 export async function getToDoDataArray() {
   try {
@@ -40,11 +40,15 @@ export async function createToDo(
 ) {
   console.log(`createToDo title:${title},memo:${memo},deadline:${deadline}`)
   try {
-    const res = await axios.post(url, {
-      title,
-      memo,
-      deadline: deadline.format('YYYY/MM/DD HH:mm:ss'),
-    })
+    const res = await axios.post(
+      url,
+      {
+        title,
+        memo,
+        deadline: deadline.format('YYYY/MM/DD HH:mm:ss'),
+      },
+      { headers: requestHeader },
+    )
     if (res.status !== 200) {
       throw Error('ToDoの作成に失敗しました')
     }
@@ -59,7 +63,7 @@ export async function createToDo(
 export async function deleteToDo(id: string) {
   console.log(`deleteToDo id:${id}`)
   try {
-    const res = await axios.delete(`${url}/${id}`)
+    const res = await axios.delete(`${url}/${id}`, { headers: requestHeader })
     if (res.status !== 200) {
       throw Error('ToDoの削除に失敗しました')
     }
