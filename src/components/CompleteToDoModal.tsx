@@ -8,11 +8,15 @@ type CompleteToDoModalProps = {
   title: string
   closeModal: () => void
   setShouldFetchToDoData: () => void
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 function CompleteToDoModal(props: CompleteToDoModalProps) {
   const complete = async () => {
+    props.setIsLoading(true)
     await deleteToDo(props.id)
+    props.setIsLoading(false)
+
     props.setShouldFetchToDoData()
     props.closeModal()
   }

@@ -11,6 +11,7 @@ type CreateToDoModalProps = {
   modalIsOpen: boolean
   closeModal: () => void
   setShouldFetchToDoData: () => void
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 function CreateToDoModal(props: CreateToDoModalProps) {
@@ -37,7 +38,10 @@ function CreateToDoModal(props: CreateToDoModalProps) {
     })
 
     if (validated && deadline !== null && deadline.isValid()) {
+      props.setIsLoading(true)
       await createToDo(title, memo, deadline)
+      props.setIsLoading(false)
+
       props.setShouldFetchToDoData()
       props.closeModal()
     }

@@ -5,6 +5,8 @@ import { Container, Row, Col } from 'react-bootstrap'
 import Header from 'components/Header'
 import ToDoCard from 'pages/App/components/ToDoCard'
 import CompleteToDoModal from 'components/CompleteToDoModal'
+import CreateToDoModal from 'components/CreateToDoModal'
+import LoadingModal from 'components/LoadingModal'
 
 import { ToDo } from 'types'
 import { getToDoDataArray } from 'util/toDoApi'
@@ -41,16 +43,31 @@ function App() {
     setCompleteToDoModalIsOpen(true)
   }
 
+  // ToDo新規作成モーダル関係
+  const [createToDoModalIsOpen, setCreateToDoModalIsOpen] =
+    useState<boolean>(false)
+
+  // ローディング画面関係
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
   useEffect(() => {
     if (shouldFetchToDoData) {
-      fetchToDoDataArray()
-      setShouldFetchToDoData(false)
+      setIsLoading(true)
+      fetchToDoDataArray().then(() => {
+        setIsLoading(false)
+        setShouldFetchToDoData(false)
+      })
     }
   }, [shouldFetchToDoData])
 
   return (
     <>
-      <Header setShouldFetchToDoData={setShouldFetchTrue} />
+      <Header
+        setShouldFetchToDoData={setShouldFetchTrue}
+        openModal={() => {
+          setCreateToDoModalIsOpen(true)
+        }}
+      />
       <Container fluid>
         <Row>
           {toDoDataArray.map((toDoData, i) => {
@@ -76,7 +93,19 @@ function App() {
           setCompleteToDoModalIsOpen(false)
         }}
         setShouldFetchToDoData={setShouldFetchTrue}
+        setIsLoading={setIsLoading}
       />
+      <CreateToDoModal
+        modalIsOpen={createToDoModalIsOpen}
+        closeModal={() => {
+          setCreateToDoModalIsOpen(false)
+        }}
+        setShouldFetchToDoData={() => {
+          setShouldFetchToDoData(true)
+        }}
+        setIsLoading={setIsLoading}
+      />
+      <LoadingModal isLoading={isLoading} />
     </>
   )
 }
