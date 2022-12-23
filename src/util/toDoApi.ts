@@ -7,12 +7,8 @@ const url =
   typeof process.env.REACT_APP_BACKEND_HOST == 'string'
     ? process.env.REACT_APP_BACKEND_HOST
     : 'http://localhost:8000'
-const accessControlAllowOrigin =
-  typeof process.env.REACT_APP_ORIGIN == 'string'
-    ? process.env.REACT_APP_ORIGIN
-    : 'http://localhost:3000'
 const requestHeader = {
-  'Access-Control-Allow-Origin': accessControlAllowOrigin,
+  'Content-Type': 'application/json',
 }
 
 export async function getToDoDataArray() {
