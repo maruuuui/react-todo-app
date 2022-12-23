@@ -10,6 +10,7 @@ import { createToDo } from 'util/toDoApi'
 type CreateToDoModalProps = {
   modalIsOpen: boolean
   closeModal: () => void
+  setShouldFetchToDoData: () => void
 }
 
 function CreateToDoModal(props: CreateToDoModalProps) {
@@ -21,7 +22,7 @@ function CreateToDoModal(props: CreateToDoModalProps) {
     setDeadline(newValue)
   }
 
-  function post() {
+  const post = async () => {
     console.log('ToDo追加ボタンが押下されたよ')
     var forms = document.querySelectorAll('.needs-validation')
 
@@ -36,7 +37,8 @@ function CreateToDoModal(props: CreateToDoModalProps) {
     })
 
     if (validated && deadline !== null && deadline.isValid()) {
-      createToDo(title, memo, deadline)
+      await createToDo(title, memo, deadline)
+      props.setShouldFetchToDoData()
       props.closeModal()
     }
   }

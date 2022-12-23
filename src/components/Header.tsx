@@ -3,7 +3,10 @@ import { Button, Container, Nav, Navbar } from 'react-bootstrap'
 
 import CreateToDoModal from 'components/CreateToDoModal'
 
-function Header() {
+type HeaderProps = {
+  setShouldFetchToDoData: () => void
+}
+function Header(props: HeaderProps) {
   const [modalIsOpen, setIsOpen] = useState<boolean>(false)
 
   function openModal() {
@@ -24,7 +27,11 @@ function Header() {
           </Button>
         </Nav.Item>
       </Container>
-      <CreateToDoModal modalIsOpen={modalIsOpen} closeModal={closeModal} />
+      <CreateToDoModal
+        modalIsOpen={modalIsOpen}
+        closeModal={closeModal}
+        setShouldFetchToDoData={props.setShouldFetchToDoData}
+      />
     </Navbar>
   )
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import 'pages/App/index.css'
 import { Container, Row, Col } from 'react-bootstrap'
 
+import Header from 'components/Header'
 import ToDoCard from 'pages/App/components/ToDoCard'
 import CompleteToDoModal from 'components/CompleteToDoModal'
 
@@ -9,34 +10,16 @@ import { ToDo } from 'types'
 import { getToDoDataArray } from 'util/toDoApi'
 
 function App() {
-  const [modalIsOpen, setIsOpen] = useState<boolean>(false)
-  const [modalContentId, setModalContentId] = useState<string>('')
-  const [modalContentTitle, setModalContentTitle] = useState<string>('')
-
-  const openModalFunc = (id: string, title: string) => {
-    console.log(`id:${id}, title:${title} の完了確認モーダルを開く`)
-    setModalContentId(id)
-    setModalContentTitle(title)
-    setIsOpen(true)
-  }
-  const closeModalFunc = () => {
-    setIsOpen(false)
-  }
+  // ToDo自体のデータ
   const [toDoDataArray, setToDoDataArray] = useState<ToDo[]>([])
   const [shouldFetchToDoData, setShouldFetchToDoData] = useState<boolean>(true)
 
-  async function fetchToDoDataArray() {
-    try {
-      // テスト表示用データ
-      // const result = [
-      //   {
-      //     id: 'hogehoge',
-      //     title: 'タイトル',
-      //     deadline: '2022/12/12 00:00',
-      //     memo: 'メモメモ',
-      //   },
-      // ]
+  const setShouldFetchTrue = () => {
+    setShouldFetchToDoData(true)
+  }
 
+  const fetchToDoDataArray = async () => {
+    try {
       // バックエンド(lambda)からToDoを取得する
       const result = await getToDoDataArray()
       setToDoDataArray(result)
@@ -44,15 +27,30 @@ function App() {
       console.log(error)
     }
   }
+
+  // ToDo完了確認モーダル関係
+  const [completeToDoModalIsOpen, setCompleteToDoModalIsOpen] =
+    useState<boolean>(false)
+  const [modalContentId, setModalContentId] = useState<string>('')
+  const [modalContentTitle, setModalContentTitle] = useState<string>('')
+
+  const openModalFunc = (id: string, title: string) => {
+    console.log(`id:${id}, title:${title} の完了確認モーダルを開く`)
+    setModalContentId(id)
+    setModalContentTitle(title)
+    setCompleteToDoModalIsOpen(true)
+  }
+
   useEffect(() => {
     if (shouldFetchToDoData) {
       fetchToDoDataArray()
+      setShouldFetchToDoData(false)
     }
-    setShouldFetchToDoData(false)
   }, [shouldFetchToDoData])
 
   return (
     <>
+      <Header setShouldFetchToDoData={setShouldFetchTrue} />
       <Container fluid>
         <Row>
           {toDoDataArray.map((toDoData, i) => {
@@ -71,10 +69,13 @@ function App() {
         </Row>
       </Container>
       <CompleteToDoModal
-        modalIsOpen={modalIsOpen}
+        completeToDoModalIsOpen={completeToDoModalIsOpen}
         id={modalContentId}
         title={modalContentTitle}
-        closeModal={closeModalFunc}
+        closeModal={() => {
+          setCompleteToDoModalIsOpen(false)
+        }}
+        setShouldFetchToDoData={setShouldFetchTrue}
       />
     </>
   )
