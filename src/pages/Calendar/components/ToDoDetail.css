@@ -1,0 +1,4 @@
+/* ポップオーバーの上にモーダルを表示させるため、zindexを変更する */
+.popover{
+  --bs-popover-zindex: 1050 !important
+}  

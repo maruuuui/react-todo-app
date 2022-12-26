@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import 'pages/App/index.css'
 
 import Layout from 'components/Layout'
-import ToDoCards from 'pages/Calendar/ToDoCards'
+import ToDoCalendar from 'pages/Calendar/ToDoCalendar'
 
 import { ToDo } from 'types'
 import { getToDoDataArray } from 'util/toDoApi'
@@ -69,7 +69,7 @@ function App() {
         createToDoModalIsOpen={createToDoModalIsOpen}
         setCreateToDoModalIsOpen={setCreateToDoModalIsOpen}
         children={
-          <ToDoCards
+          <ToDoCalendar
             toDoDataArray={toDoDataArray}
             openModalFunc={openModalFunc}
           />

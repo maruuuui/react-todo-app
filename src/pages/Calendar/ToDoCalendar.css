@@ -1,0 +1,9 @@
+.calendarHead {
+  text-align: center;
+  background-color: gray;
+  border: 1px solid black;
+}
+
+.calendarDay {
+  border: 1px solid black;
+}
