@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import 'pages/App/index.css'
-import { Container, Row, Col } from 'react-bootstrap'
 
-import Header from 'components/Header'
-import ToDoCard from 'pages/App/components/ToDoCard'
-import CompleteToDoModal from 'components/CompleteToDoModal'
-import CreateToDoModal from 'components/CreateToDoModal'
-import LoadingModal from 'components/LoadingModal'
+import Layout from 'components/Layout'
+import ToDoCards from 'pages/Calendar/ToDoCards'
 
 import { ToDo } from 'types'
 import { getToDoDataArray } from 'util/toDoApi'
@@ -62,50 +58,23 @@ function App() {
 
   return (
     <>
-      <Header
-        setShouldFetchToDoData={setShouldFetchTrue}
-        openModal={() => {
-          setCreateToDoModalIsOpen(true)
-        }}
-      />
-      <Container fluid>
-        <Row>
-          {toDoDataArray.map((toDoData, i) => {
-            return (
-              <Col xs={12} md={4} lg={3} key={i}>
-                <ToDoCard
-                  id={toDoData.id}
-                  title={toDoData.title}
-                  deadline={toDoData.deadline}
-                  memo={toDoData.memo}
-                  openModalFunc={openModalFunc}
-                />
-              </Col>
-            )
-          })}
-        </Row>
-      </Container>
-      <CompleteToDoModal
+      <Layout
+        setShouldFetchTrue={setShouldFetchTrue}
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
         completeToDoModalIsOpen={completeToDoModalIsOpen}
-        id={modalContentId}
-        title={modalContentTitle}
-        closeModal={() => {
-          setCompleteToDoModalIsOpen(false)
-        }}
-        setShouldFetchToDoData={setShouldFetchTrue}
-        setIsLoading={setIsLoading}
+        setCompleteToDoModalIsOpen={setCompleteToDoModalIsOpen}
+        modalContentId={modalContentId}
+        modalContentTitle={modalContentTitle}
+        createToDoModalIsOpen={createToDoModalIsOpen}
+        setCreateToDoModalIsOpen={setCreateToDoModalIsOpen}
+        children={
+          <ToDoCards
+            toDoDataArray={toDoDataArray}
+            openModalFunc={openModalFunc}
+          />
+        }
       />
-      <CreateToDoModal
-        modalIsOpen={createToDoModalIsOpen}
-        closeModal={() => {
-          setCreateToDoModalIsOpen(false)
-        }}
-        setShouldFetchToDoData={() => {
-          setShouldFetchToDoData(true)
-        }}
-        setIsLoading={setIsLoading}
-      />
-      <LoadingModal isLoading={isLoading} />
     </>
   )
 }
