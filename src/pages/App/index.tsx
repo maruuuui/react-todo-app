@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import 'pages/App/index.css'
 
 import Layout from 'components/Layout'
-import ToDoCards from 'pages/Calendar/ToDoCards'
+import ToDoCards from 'pages/App/ToDoCards'
 
 import { ToDo } from 'types'
 import { getToDoDataArray } from 'util/toDoApi'
