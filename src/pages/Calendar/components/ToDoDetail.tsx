@@ -15,7 +15,7 @@ function ToDoDetail(props: ToDoDetailProps) {
   return (
     <OverlayTrigger
       trigger="click"
-      placement="top"
+      placement="bottom"
       overlay={
         <Popover>
           <Popover.Header as="h3">{props.title}</Popover.Header>
